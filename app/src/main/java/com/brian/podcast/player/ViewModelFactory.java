@@ -5,16 +5,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.brian.podcast.common.RxScheduler;
 import com.brian.podcast.common.UseCaseHandler;
+import com.brian.podcast.common.UseCaseScheduler;
+import com.brian.podcast.player.episodes.ChannelRepository;
 import com.brian.podcast.player.episodes.EpisodesViewModel;
 import com.brian.podcast.player.episodes.GetChannelUseCase;
 
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
+    private final UseCaseScheduler useCaseScheduler;
     private final UseCaseHandler useCaseHandler;
+    private final ChannelRepository channelRepository;
 
-    public ViewModelFactory(UseCaseHandler useCaseHandler) {
-        this.useCaseHandler = useCaseHandler;
+    public ViewModelFactory() {
+        useCaseScheduler = new RxScheduler();
+        useCaseHandler = new UseCaseHandler(useCaseScheduler);
+
+        channelRepository = new ChannelRepository();
     }
 
     public <T extends ViewModel> T getViewModel(@NonNull Fragment fragment, @NonNull Class<T> viewModelClass) {
@@ -33,6 +41,6 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     }
 
     private GetChannelUseCase provideGetChannelUseCase() {
-        return new GetChannelUseCase();
+        return new GetChannelUseCase(channelRepository);
     }
 }

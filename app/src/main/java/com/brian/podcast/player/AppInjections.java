@@ -9,10 +9,7 @@ public class AppInjections {
     private static ViewModelFactory viewModelFactory;
 
     public static void init() {
-        UseCaseScheduler useCaseScheduler = new RxScheduler();
-        UseCaseHandler useCaseHandler = new UseCaseHandler(useCaseScheduler);
-
-        viewModelFactory = new ViewModelFactory(useCaseHandler);
+        viewModelFactory = new ViewModelFactory();
     }
 
     public static ViewModelFactory getViewModelFactory() {
