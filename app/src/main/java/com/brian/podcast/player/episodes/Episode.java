@@ -12,4 +12,14 @@ public class Episode {
         this.publishedDate = publishedDate;
         this.mediaUrl = mediaUrl;
     }
+
+    @Override
+    public String toString() {
+        return "Episode{" +
+                "coverImageUrl='" + coverImageUrl + '\'' +
+                ", title='" + title + '\'' +
+                ", publishedDate='" + publishedDate + '\'' +
+                ", mediaUrl='" + mediaUrl + '\'' +
+                '}';
+    }
 }

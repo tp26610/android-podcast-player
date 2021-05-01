@@ -11,7 +11,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.brian.podcast.player.AppInjections;
 import com.brian.podcast.player.R;
+import com.brian.podcast.player.ViewModelFactory;
 import com.bumptech.glide.Glide;
 
 public class EpisodesFragment extends Fragment {
@@ -22,7 +24,9 @@ public class EpisodesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = new ViewModelProvider(this).get(EpisodesViewModel.class);
+        viewModel = AppInjections
+                .getViewModelFactory()
+                .getViewModel(this, EpisodesViewModel.class);
         viewModel.loadChannel();
     }
 

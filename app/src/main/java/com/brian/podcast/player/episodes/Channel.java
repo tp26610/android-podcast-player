@@ -1,6 +1,5 @@
 package com.brian.podcast.player.episodes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Channel {
@@ -10,5 +9,13 @@ public class Channel {
     public Channel(String coverImageUrl, List<Episode> episodes) {
         this.coverImageUrl = coverImageUrl;
         this.episodes = episodes;
+    }
+
+    @Override
+    public String toString() {
+        return "Channel{" +
+                "coverImageUrl='" + coverImageUrl + '\'' +
+//                ", episodes=" + episodes +
+                '}';
     }
 }
