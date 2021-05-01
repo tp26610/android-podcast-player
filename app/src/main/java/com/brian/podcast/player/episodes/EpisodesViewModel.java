@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import com.prof.rssparser.Article;
 import com.prof.rssparser.Channel;
 import com.prof.rssparser.OnTaskCompleted;
 import com.prof.rssparser.Parser;
@@ -24,7 +25,13 @@ public class EpisodesViewModel extends ViewModel {
             @Override
             public void onTaskCompleted(Channel channel) {
                 // Use the channel info
+                Log.i("Brian", ">> loaded image " + channel.getImage());
                 Log.i("Brian", ">> loaded channel " + channel);
+
+//                Article article = channel.getArticles().get(0);
+//                Log.i("Brian", ">> episodes 0 article = " + article);
+//                Log.i("Brian", ">> episodes 0 article.image = " + article.getImage());
+
             }
 
             //what to do in case of error
