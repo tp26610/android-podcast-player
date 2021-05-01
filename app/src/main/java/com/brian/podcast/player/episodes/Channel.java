@@ -11,8 +11,4 @@ public class Channel {
         this.coverImageUrl = coverImageUrl;
         this.episodes = episodes;
     }
-
-    public List<Episode> getEpisodes() {
-        return episodes;
-    }
 }

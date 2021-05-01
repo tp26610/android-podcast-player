@@ -45,4 +45,17 @@ public class ChannelMapperTest {
 
         assertThat(channel.coverImageUrl, is("https://i1.sndcdn.com/avatars-000326154119-ogb1ma-original.jpg"));
     }
+
+    @Test
+    public void it_maps_episodes() {
+        com.prof.rssparser.Channel rssChannel = createTestRssChannel();
+        Channel channel = ChannelMapper.mapChannelFromRss(rssChannel);
+
+        assertThat(channel.episodes.size(), is(1));
+
+        Episode episode = channel.episodes.get(0);
+        assertThat(episode.coverImageUrl, is("https://i1.sndcdn.com/artworks-Z7zJRFuDjv63KCHv-5W8whA-t3000x3000.jpg"));
+        assertThat(episode.title, is("Ep.141 色彩繽紛的桌上型電腦 — 蘋..."));
+        assertThat(episode.publishedDate, is("2021/04/26"));
+    }
 }
