@@ -21,6 +21,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int COVER_IMAGE_ITEM_COUNT = 1;
 
     private Channel channel;
+    private OnItemClickListener onItemClickListener;
 
     @Override
     public int getItemViewType(int position) {
@@ -69,7 +70,8 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
             }
             case VIEW_TYPE_EPISODE: {
-                Episode episode = channel.episodes.get(position - COVER_IMAGE_ITEM_COUNT);
+                int episodeIndex = position - COVER_IMAGE_ITEM_COUNT;
+                Episode episode = channel.episodes.get(episodeIndex);
                 EpisodeViewHolder viewHolder = (EpisodeViewHolder) holder;
 
                 // bind image
@@ -81,6 +83,10 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 // bind title and date
                 viewHolder.title.setText(episode.title);
                 viewHolder.date.setText(episode.publishedDate);
+
+                viewHolder.itemView.setOnClickListener(v -> {
+                    onItemClickListener.onItemClicked(episodeIndex);
+                });
                 break;
             }
             default:
@@ -97,6 +103,14 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return COVER_IMAGE_ITEM_COUNT + episodesCount;
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        onItemClickListener = listener;
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClicked(int episodeIndex);
+    }
 
     public static class CoverImageViewHolder extends RecyclerView.ViewHolder {
         public final AppCompatImageView imageView;

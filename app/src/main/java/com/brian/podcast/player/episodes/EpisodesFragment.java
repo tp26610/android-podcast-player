@@ -11,9 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brian.podcast.player.AppInjections;
+import com.brian.podcast.player.MainActivity;
 import com.brian.podcast.player.R;
+import com.brian.podcast.player.episode.EpisodeFragment;
 
 public class EpisodesFragment extends Fragment {
+
+    private MainActivity activity;
 
     private EpisodesViewModel viewModel;
 
@@ -25,6 +29,8 @@ public class EpisodesFragment extends Fragment {
                 .getViewModelFactory()
                 .getViewModel(this, EpisodesViewModel.class);
         viewModel.loadChannel();
+
+        activity = (MainActivity) requireActivity();
     }
 
     @Override
@@ -41,7 +47,12 @@ public class EpisodesFragment extends Fragment {
 
     private void setupRecyclerView() {
         RecyclerView recyclerView = requireView().findViewById(R.id.episodes_recyclerView);
+
         ChannelAdapter adapter = new ChannelAdapter();
+        adapter.setOnItemClickListener(episodeIndex -> {
+            Fragment fragment = EpisodeFragment.newInstance(episodeIndex);
+            activity.navigateByFragment(fragment);
+        });
 
         recyclerView.setAdapter(adapter);
 
