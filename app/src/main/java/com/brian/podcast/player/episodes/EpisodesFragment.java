@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.brian.podcast.player.AppInjections;
 import com.brian.podcast.player.R;
-import com.brian.podcast.player.ViewModelFactory;
-import com.bumptech.glide.Glide;
 
 public class EpisodesFragment extends Fragment {
 
@@ -39,8 +36,15 @@ public class EpisodesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupRecyclerView();
+    }
 
-        AppCompatImageView coverImageView = requireView().findViewById(R.id.episodes_coverImage);
-        Glide.with(this).load("https://i1.sndcdn.com/avatars-000326154119-ogb1ma-original.jpg").into(coverImageView);
+    private void setupRecyclerView() {
+        RecyclerView recyclerView = requireView().findViewById(R.id.episodes_recyclerView);
+        ChannelAdapter adapter = new ChannelAdapter();
+
+        recyclerView.setAdapter(adapter);
+
+        viewModel.getObservableChannel().observe(this, adapter::setChannel);
     }
 }
