@@ -32,14 +32,16 @@
         app:layout_constraintTop_toBottomOf="@id/player_cover_image"
         tools:text="Ep.141 色彩繽紛的桌上型電腦 — 蘋..." />
 
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/player_playButton"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="56dp"-->
-<!--        android:text="播放"-->
-<!--        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <com.google.android.exoplayer2.ui.PlayerControlView
+        android:id="@+id/player_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:show_timeout="0"
+        app:show_fastforward_button="false"
+        app:show_rewind_button="false"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

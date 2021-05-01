@@ -53,4 +53,9 @@ dependencies {
 
     implementation "io.reactivex.rxjava3:rxjava:3.0.12"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
+
+    def exo_player_version = "2.13.3"
+    implementation "com.google.android.exoplayer:exoplayer:$exo_player_version"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$exo_player_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exo_player_version"
 }

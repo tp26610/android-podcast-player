@@ -15,10 +15,14 @@ import com.brian.podcast.player.AppInjections;
 import com.brian.podcast.player.R;
 import com.brian.podcast.player.episode.EpisodeViewModel;
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 
 public class PlayerFragment extends Fragment {
 
     private EpisodeViewModel viewModel;
+    private SimpleExoPlayer player;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +43,38 @@ public class PlayerFragment extends Fragment {
 
         setupCoverImage();
         setupEpisodeTitle();
+        setupPlayer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        player.stop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        player.release();
+    }
+
+    private void setupPlayer() {
+        player = new SimpleExoPlayer.Builder(requireContext()).build();
+
+        PlayerControlView playerControlView = requireView().findViewById(R.id.player_control_view);
+        playerControlView.setPlayer(player);
+
+        viewModel.getObservableEpisode().observe(this, episode -> {
+            // Set the media item to be played.
+            player.setMediaItem(MediaItem.fromUri(episode.mediaUrl));
+//            player.addMediaItem(MediaItem.fromUri("https://feeds.soundcloud.com/stream/1026999679-daodutech-podcast-google-vs-oracle-justices-compromise-guest-host-pretty-wife-professor-countryside-professor.mp3"));
+
+            // Prepare the player.
+            player.prepare();
+        });
+
     }
 
     private void setupEpisodeTitle() {
