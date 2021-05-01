@@ -28,6 +28,7 @@ public class ChannelMapper {
     public static Episode mapEpisode(Article article) {
         String coverImageUrl = article.getImage();
         String title = article.getTitle();
+        String description = article.getDescription();
 
         String publishedDate = null;
         try {
@@ -37,6 +38,6 @@ public class ChannelMapper {
         }
 
         String mediaUrl = article.getAudio();
-        return new Episode(coverImageUrl, title, publishedDate, mediaUrl);
+        return new Episode(coverImageUrl, title, publishedDate, mediaUrl, description);
     }
 }

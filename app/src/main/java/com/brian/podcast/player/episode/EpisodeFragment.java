@@ -1,6 +1,7 @@
 package com.brian.podcast.player.episode;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
 import com.brian.podcast.player.AppInjections;
@@ -51,6 +53,25 @@ public class EpisodeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupCoverImage();
+        setupEpisodeTitle();
+        setupEpisodeDescription();
+    }
+
+    private void setupEpisodeDescription() {
+        AppCompatTextView textView = requireView().findViewById(R.id.episode_episodeDescription);
+        textView.setMovementMethod(new ScrollingMovementMethod());
+
+        viewModel.getObservableEpisode().observe(this, episode -> {
+            textView.setText(episode.description);
+        });
+
+    }
+
+    private void setupEpisodeTitle() {
+        AppCompatTextView textView = requireView().findViewById(R.id.episode_episodeTitle);
+        viewModel.getObservableEpisode().observe(this, episode -> {
+            textView.setText(episode.title);
+        });
     }
 
     private void setupCoverImage() {

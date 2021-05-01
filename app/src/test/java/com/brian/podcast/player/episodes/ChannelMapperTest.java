@@ -57,5 +57,6 @@ public class ChannelMapperTest {
         assertThat(episode.coverImageUrl, is("https://i1.sndcdn.com/artworks-Z7zJRFuDjv63KCHv-5W8whA-t3000x3000.jpg"));
         assertThat(episode.title, is("Ep.141 色彩繽紛的桌上型電腦 — 蘋..."));
         assertThat(episode.publishedDate, is("2021/04/26"));
+        assertThat(episode.description, is("蘋果春季發表會沒有..."));
     }
 }
