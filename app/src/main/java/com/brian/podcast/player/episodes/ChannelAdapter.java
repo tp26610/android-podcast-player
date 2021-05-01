@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brian.podcast.player.R;
@@ -35,10 +36,10 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 View view = inflater.inflate(R.layout.episodes_item_cover_image, parent, false);
                 return new CoverImageViewHolder(view);
             }
-            //            case VIEW_TYPE_EPISODE: {
-            //                View view = inflater.inflate(R.layout.episodes_item_episode, parent, false);
-            //                return new EpisodeViewHolder(view);
-            //            }
+            case VIEW_TYPE_EPISODE: {
+                View view = inflater.inflate(R.layout.episodes_item_episode, parent, false);
+                return new EpisodeViewHolder(view);
+            }
             default:
                 throw new RuntimeException("onCreateViewHolder >> unknown viewType=" + viewType);
         }
@@ -68,7 +69,18 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
             }
             case VIEW_TYPE_EPISODE: {
+                Episode episode = channel.episodes.get(position - COVER_IMAGE_ITEM_COUNT);
                 EpisodeViewHolder viewHolder = (EpisodeViewHolder) holder;
+
+                // bind image
+                Glide.with(viewHolder.image)
+                        .load(episode.coverImageUrl)
+                        .placeholder(null)
+                        .into(viewHolder.image);
+
+                // bind title and date
+                viewHolder.title.setText(episode.title);
+                viewHolder.date.setText(episode.publishedDate);
                 break;
             }
             default:
@@ -79,10 +91,9 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         int episodesCount = 0;
-        //        if (channel != null && channel.episodes != null) {
-        //            episodesCount = channel.episodes.size();
-        //        }
-        Log.i("Brian", "getItemCount >> " + (COVER_IMAGE_ITEM_COUNT + episodesCount));
+        if (channel != null && channel.episodes != null) {
+            episodesCount = channel.episodes.size();
+        }
         return COVER_IMAGE_ITEM_COUNT + episodesCount;
     }
 
@@ -98,8 +109,16 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class EpisodeViewHolder extends RecyclerView.ViewHolder {
+        public final AppCompatImageView image;
+        public final AppCompatTextView title;
+        public final AppCompatTextView date;
+
         public EpisodeViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            image = itemView.findViewById(R.id.episodes_item_episode_image);
+            title = itemView.findViewById(R.id.episodes_item_episode_title);
+            date = itemView.findViewById(R.id.episodes_item_episode_date);
         }
     }
 }

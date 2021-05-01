@@ -27,8 +27,6 @@ public class EpisodesViewModel extends ViewModel {
         useCaseHandler.execute(this.getChannelUseCase, new GetChannelUseCase.Input())
                 .subscribe(output -> {
                     Channel channel = output.channel;
-                    Log.i("Brian", ">> loaded channel=" + channel);
-
                     observableChannel.setValue(channel);
                 }, error -> {
                     observableError.setValue(new Event<>(error));
