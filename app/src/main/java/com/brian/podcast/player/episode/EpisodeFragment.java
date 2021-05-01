@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
 import com.brian.podcast.player.AppInjections;
+import com.brian.podcast.player.MainActivity;
 import com.brian.podcast.player.R;
+import com.brian.podcast.player.player.PlayerFragment;
 import com.bumptech.glide.Glide;
 
 public class EpisodeFragment extends Fragment {
@@ -36,7 +39,7 @@ public class EpisodeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = AppInjections.getViewModelFactory().getViewModel(this, EpisodeViewModel.class);
+        viewModel = AppInjections.getViewModelFactory().getViewModel(requireActivity(), EpisodeViewModel.class);
 
         int episodeIndex = getArguments().getInt(ARG_EPISODE_INDEX);
         viewModel.loadEpisode(episodeIndex);
@@ -55,6 +58,13 @@ public class EpisodeFragment extends Fragment {
         setupCoverImage();
         setupEpisodeTitle();
         setupEpisodeDescription();
+        setupPlayButton();
+    }
+
+    private void setupPlayButton() {
+        MainActivity activity = (MainActivity) requireActivity();
+        AppCompatButton button = requireView().findViewById(R.id.episode_playButton);
+        button.setOnClickListener(v -> activity.navigateByFragment(new PlayerFragment()));
     }
 
     private void setupEpisodeDescription() {

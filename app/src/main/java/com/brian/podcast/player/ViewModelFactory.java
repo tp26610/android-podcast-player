@@ -2,6 +2,7 @@ package com.brian.podcast.player;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,6 +30,10 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     public <T extends ViewModel> T getViewModel(@NonNull Fragment fragment, @NonNull Class<T> viewModelClass) {
         return new ViewModelProvider(fragment, this).get(viewModelClass);
+    }
+
+    public <T extends ViewModel> T getViewModel(@NonNull FragmentActivity activity, @NonNull Class<T> viewModelClass) {
+        return new ViewModelProvider(activity, this).get(viewModelClass);
     }
 
     @SuppressWarnings("unchecked")
