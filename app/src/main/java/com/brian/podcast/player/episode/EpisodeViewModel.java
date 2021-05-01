@@ -10,24 +10,40 @@ import com.brian.podcast.player.episodes.Episode;
 public class EpisodeViewModel extends ViewModel {
 
     private final UseCaseHandler useCaseHandler;
-    private final GetEpisodeUseCase getEpisodeUseCase;
+    private final GetNearEpisodesUseCase getNearEpisodesUseCase;
 
     private MutableLiveData<Episode> observableEpisode = new MutableLiveData<>();
+    private MutableLiveData<NearEpisodes> observableNearEpisodes = new MutableLiveData<>();
 
-    public EpisodeViewModel(UseCaseHandler useCaseHandler, GetEpisodeUseCase getEpisodeUseCase) {
+    private int currentEpisodeIndex = 0;
+
+    public EpisodeViewModel(UseCaseHandler useCaseHandler, GetNearEpisodesUseCase getNearEpisodesUseCase) {
         this.useCaseHandler = useCaseHandler;
-        this.getEpisodeUseCase = getEpisodeUseCase;
+        this.getNearEpisodesUseCase = getNearEpisodesUseCase;
     }
 
     public void loadEpisode(int episodeIndex) {
-        useCaseHandler.execute(getEpisodeUseCase, new GetEpisodeUseCase.Input(episodeIndex))
+        currentEpisodeIndex = episodeIndex;
+        useCaseHandler.execute(getNearEpisodesUseCase, new GetNearEpisodesUseCase.Input(episodeIndex))
                 .subscribe(
-                        output -> observableEpisode.setValue(output.episode),
-                        error -> {}
+                        output -> {
+                            observableEpisode.setValue(output.episode);
+                            observableNearEpisodes.setValue(output.nearEpisodes);
+                        },
+                        error -> {
+                        }
                 );
     }
 
     public LiveData<Episode> getObservableEpisode() {
         return observableEpisode;
+    }
+
+    public LiveData<NearEpisodes> getObservableNearEpisodes() {
+        return observableNearEpisodes;
+    }
+
+    public int getCurrentEpisodeIndex() {
+        return currentEpisodeIndex;
     }
 }

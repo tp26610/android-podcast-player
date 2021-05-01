@@ -6,10 +6,10 @@ import com.brian.podcast.player.episodes.Episode;
 
 import io.reactivex.rxjava3.core.Single;
 
-public class GetEpisodeUseCase extends UseCase<GetEpisodeUseCase.Input, GetEpisodeUseCase.Output> {
+public class GetNearEpisodesUseCase extends UseCase<GetNearEpisodesUseCase.Input, GetNearEpisodesUseCase.Output> {
     private final ChannelRepository channelRepository;
 
-    public GetEpisodeUseCase(ChannelRepository channelRepository) {
+    public GetNearEpisodesUseCase(ChannelRepository channelRepository) {
         this.channelRepository = channelRepository;
     }
 
@@ -18,8 +18,13 @@ public class GetEpisodeUseCase extends UseCase<GetEpisodeUseCase.Input, GetEpiso
 
         return Single.fromCallable(() -> {
             int episodeIndex = inputData.episodeIndex;
-            Episode episode = channelRepository.getEpisodeByIndex(inputData.episodeIndex);
-            return new Output(episodeIndex, episode);
+            Episode episode = channelRepository.getEpisodeByIndex(episodeIndex);
+            Episode prevEpisode = channelRepository.getEpisodeByIndex(episodeIndex - 1);
+            Episode nextEpisode = channelRepository.getEpisodeByIndex(episodeIndex + 1);
+
+            NearEpisodes nearEpisodes = new NearEpisodes(prevEpisode, episode, nextEpisode);
+
+            return new Output(episodeIndex, episode, nearEpisodes);
         });
     }
 
@@ -34,14 +39,12 @@ public class GetEpisodeUseCase extends UseCase<GetEpisodeUseCase.Input, GetEpiso
     public static class Output implements UseCase.Output {
         public final Episode episode;
         public final int episodeIndex;
+        public NearEpisodes nearEpisodes;
 
-        public Output(int episodeIndex, Episode episode) {
+        public Output(int episodeIndex, Episode episode, NearEpisodes nearEpisodes) {
             this.episodeIndex = episodeIndex;
             this.episode = episode;
-        }
-
-        public boolean hasEpisode() {
-            return episode != null;
+            this.nearEpisodes = nearEpisodes;
         }
     }
 }
