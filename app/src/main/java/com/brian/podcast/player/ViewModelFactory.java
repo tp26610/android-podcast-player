@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.brian.podcast.common.RxScheduler;
 import com.brian.podcast.common.UseCaseHandler;
 import com.brian.podcast.common.UseCaseScheduler;
+import com.brian.podcast.player.episode.EpisodeViewModel;
+import com.brian.podcast.player.episode.GetEpisodeUseCase;
 import com.brian.podcast.player.episodes.ChannelRepository;
 import com.brian.podcast.player.episodes.EpisodesViewModel;
 import com.brian.podcast.player.episodes.GetChannelUseCase;
@@ -35,9 +37,15 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(EpisodesViewModel.class)) {
             return (T) new EpisodesViewModel(useCaseHandler, provideGetChannelUseCase());
+        } else if (modelClass.isAssignableFrom(EpisodeViewModel.class)) {
+            return (T) new EpisodeViewModel(useCaseHandler, provideGetEpisodeUseCase());
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
+    }
+
+    private GetEpisodeUseCase provideGetEpisodeUseCase() {
+        return new GetEpisodeUseCase(channelRepository);
     }
 
     private GetChannelUseCase provideGetChannelUseCase() {

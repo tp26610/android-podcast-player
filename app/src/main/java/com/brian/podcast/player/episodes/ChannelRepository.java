@@ -4,6 +4,7 @@ import com.prof.rssparser.OnTaskCompleted;
 import com.prof.rssparser.Parser;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import io.reactivex.rxjava3.core.Single;
 
@@ -33,5 +34,20 @@ public class ChannelRepository {
             });
             parser.execute("https://feeds.soundcloud.com/users/soundcloud:users:322164009/sounds.rss");
         });
+    }
+
+    private Channel requireChannel() {
+        if (cachedChannel == null) {
+            throw new IllegalStateException("Channel is null");
+        }
+        return cachedChannel;
+    }
+
+    @Nullable
+    public Episode getEpisodeByIndex(int episodeIndex) {
+        if (episodeIndex < 0 || episodeIndex >= requireChannel().episodes.size()) {
+            return null;
+        }
+        return requireChannel().episodes.get(episodeIndex);
     }
 }
